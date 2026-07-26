@@ -28,8 +28,11 @@
   #:use-module (gnu packages glib)
   #:use-module (gnu packages file)
   #:use-module (gnu packages video)
+  #:use-module (gnu packages audio)
   #:use-module (gnu packages nss)
   #:use-module (gnu packages freedesktop)
+  #:use-module (gnu packages fonts)
+  #:use-module (gnu packages pulseaudio)
 )
 
 (define prism-container-libs
@@ -45,16 +48,21 @@
     ("diffutils" ,diffutils)
     ("dbus-glib" ,dbus-glib)            ; Required for steam browser.
     ("glibc-locales", glibc-locales)
-    ;("elfutils" ,elfutils)              ; Required for capturing library dependencies in pv.
     ("eudev" ,eudev)                    ; Required for steamwebhelper/heavy runtime.
     ("file" ,file)                      ; Used for steam installation.
     ("find" ,findutils)                 ; Required at least for some logging.
-
-    ;; These next three fonts are to cover emoji and Chinese/Japanese/Korean
-    ;; and related scripts.
-
-
-
+    
+    ("alsa-lib" ,alsa-lib)
+    ("alsa-plugins:pulseaudio" , alsa-plugins "pulseaudio")
+    ("font-dejavu" ,font-dejavu)
+    ("font-liberation" ,font-liberation)
+    ("openal" ,openal) 
+    ("pulseaudio" ,pulseaudio)        
+ 
+    ("font-google-noto" ,font-google-noto)
+    ("font-google-noto-emoji" ,font-google-noto-emoji)
+    ("font-google-noto-sans-cjk" ,font-google-noto-sans-cjk)
+    ("font-google-noto-serif-cjk" ,font-google-noto-serif-cjk)
     ;("freetype" ,freetype)              ; Required for steam login.
     ;("gawk" ,gawk)
     ;("grep" ,grep)
