@@ -170,7 +170,20 @@
                 )
               )
             )
-          )          
+
+            (add-after 'patch-dot-desktop-files 'patch-desktop-file
+              (lambda _
+                (let ((path (string-append (assoc-ref %outputs "out") "/share/applications/")))
+                  (substitute* (string-append path "org.prismlauncher.PrismLauncher.desktop")
+                    (
+                      ("Exec=.*/prismlauncher") 
+                      "Exec=prism"
+                    )
+                  )
+                )
+              )
+            ) 
+          )         
         ;end phases
       )
     )
@@ -211,7 +224,8 @@
                  ;; 64-bit.
                  ;; TODO: Change order in manifest, or set PATH, but prism
                  ;; needs a 32-bit ldd (found first?).
-                 (delete "openjdk25"))
+                 (delete "openjdk25")
+               )
                #:name "fhs-union-32"
                #:system "i686-linux"))
     (link-files '("share"))
