@@ -23,10 +23,7 @@
   #:use-module (gnu packages compression)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages gtk)
-  #:use-module (gnu packages bash)
   #:use-module (gnu packages base)
-  #:use-module (gnu packages glib)
-  #:use-module (gnu packages file)
   #:use-module (gnu packages video)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages nss)
@@ -34,7 +31,6 @@
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages pulseaudio)
   #:use-module (gnu packages speech)
-  #:use-module (gnu packages xorg)
 )
 
 (define prism-container-libs
@@ -60,8 +56,6 @@
     ("font-google-noto-sans-cjk" ,font-google-noto-sans-cjk)
     ("font-google-noto-serif-cjk" ,font-google-noto-serif-cjk)
     
-    ;("libbsd" ,libbsd)
-    ;("libcap" ,libcap)                  ; Required for SteamVR, but needs pkexec too.
     ;("libusb" ,libusb)                  ; controller support maybe?
     ;("usbutils", usbutils)
     
