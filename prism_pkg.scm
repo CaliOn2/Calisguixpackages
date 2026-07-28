@@ -33,60 +33,50 @@
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages pulseaudio)
+  #:use-module (gnu packages speech)
+  #:use-module (gnu packages xorg)
 )
 
 (define prism-container-libs
   `(
+    ("at-spi2-core" ,at-spi2-core)      ; Needed for proper mouse input capture
+
     ;("openjdk11" ,openjdk11)
     ;("openjdk16" ,openjdk16)
     ;("openjdk17" ,openjdk17)
     ;("openjdk21" ,openjdk21)
     ("openjdk25" ,openjdk25)
-    ("at-spi2-core" ,at-spi2-core)      ; Required (often) for SteamVR interface.
-    ("bash" ,bash)                      ; Required for steam startup.
-    ("coreutils" ,coreutils)
-    ("diffutils" ,diffutils)
-    ("dbus-glib" ,dbus-glib)            ; Required for steam browser.
-    ("glibc-locales", glibc-locales)
-    ("eudev" ,eudev)                    ; Required for steamwebhelper/heavy runtime.
-    ("file" ,file)                      ; Used for steam installation.
-    ("find" ,findutils)                 ; Required at least for some logging.
+
+    ("glibc-locales", glibc-locales)    ;supress warning of missing locales
     
-    ("alsa-lib" ,alsa-lib)
+    ("alsa-lib" ,alsa-lib)  ;audio stuff might not need everything
     ("alsa-plugins:pulseaudio" , alsa-plugins "pulseaudio")
-    ("font-dejavu" ,font-dejavu)
-    ("font-liberation" ,font-liberation)
     ("openal" ,openal) 
-    ("pulseaudio" ,pulseaudio)        
+    ("pulseaudio" ,pulseaudio)
+    ("flite" ,flite)  ; needed for speech systhesis        
  
-    ("font-google-noto" ,font-google-noto)
+    ("font-google-noto" ,font-google-noto) ; needed for languages
     ("font-google-noto-emoji" ,font-google-noto-emoji)
     ("font-google-noto-sans-cjk" ,font-google-noto-sans-cjk)
     ("font-google-noto-serif-cjk" ,font-google-noto-serif-cjk)
-    ;("freetype" ,freetype)              ; Required for steam login.
-    ;("gawk" ,gawk)
-    ;("grep" ,grep)
+    
     ;("libbsd" ,libbsd)
     ;("libcap" ,libcap)                  ; Required for SteamVR, but needs pkexec too.
-    ;("libusb" ,libusb)                  ; Required for SteamVR.
+    ;("libusb" ,libusb)                  ; controller support maybe?
+    ;("usbutils", usbutils)
+    
     ("libva" ,libva)                    ; Required for hardware video encoding/decoding.
     ("libvdpau" ,libvdpau)              ; Required for hardware video encoding/decoding.
     ("libvdpau-va-gl" ,libvdpau-va-gl)  ; Additional VDPAU support.
     ("llvm" ,llvm-for-mesa)             ; Required for mesa.
-    ;("lsof" ,lsof)                      ; Required for some friend's list actions.
-    ("mesa" ,mesa)                      ; Required for steam startup.
-    ("nss-certs" ,nss-certs)            ; Required for steam login.
-    ;("pciutils" ,pciutils)              ; Tries to run lspci at steam startup.
-    ;("procps" ,procps)
-    ;("sed" ,sed)
-    ("tar" ,tar)
-    ;("usbutils" ,usbutils)              ; Required for SteamVR.
-    ("util-linux" ,util-linux)          ; Required for steam login.
-    ("wayland" ,wayland)                ; Required for mesa vulkan (e.g. libvulkan_radeon).
+    ("mesa" ,mesa)                      ; Required for graphics stuff
+    ("nss-certs" ,nss-certs)            ; Required for accounts and such
+    ("wayland" ,wayland)                ; Needed for mesa vulcan
+    ("pciutils", pciutils)              ; runs lspci at start of minecraft launch
     ("xdg-user-dirs" ,xdg-user-dirs)    ; Suppress warning of missing xdg-user-dir.
-    ("xz" ,xz)
+    
   )
-)                ; Required for progress dialogs.
+)                
 
 
 
@@ -170,7 +160,7 @@
                 )
               )
             )
-
+            
             (add-after 'patch-dot-desktop-files 'patch-desktop-file
               (lambda _
                 (let ((path (string-append (assoc-ref %outputs "out") "/share/applications/")))
@@ -182,7 +172,8 @@
                   )
                 )
               )
-            ) 
+            )
+            
           )         
         ;end phases
       )
