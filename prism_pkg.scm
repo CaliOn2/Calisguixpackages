@@ -69,15 +69,21 @@
     ("pciutils", pciutils)              ; runs lspci at start of minecraft launch
     ("xdg-user-dirs" ,xdg-user-dirs)    ; Suppress warning of missing xdg-user-dir.
     
+    ;; TODO: still missing some icons and cursor isn't hidden when running minecraft, error logs also show a render error
+    ;;       missing x11 cursor, this doesn't impair functionality so fix it yourself if it annoys you, 
+    ;;       the program is launched in a container with wayland as it's QT_QPA_PLATFORM environment variable which should be xcb
+    ;;       additionally one would probably need some form of xwayland this probably isn't an issue on x11, hasn't been tested yet though
   )
-)                
+)
+
+                
 
 
 
 (define-public prism-client
   (package
     (name "prism-client")
-    (version "11.0.3") ;Do not fuck with this
+    (version "11.0.3")
     (source
       (origin
         (method git-fetch)
@@ -91,34 +97,29 @@
 	(file-name (git-file-name name version))
 	(sha256
 	  (base32
-	    "04dv4c849lghhqq25p58l5aq37r2kvx9297w1139x9ajab97xhhf" ;Do not fuck with this
+	    "04dv4c849lghhqq25p58l5aq37r2kvx9297w1139x9ajab97xhhf"
 	  )
 	)
       )
     )
     (build-system cmake-build-system)
     (inputs
-      ;(append
-        (list 
-          qtbase
-          qtnetworkauth
-          qtimageformats  
-          qtsvg
-          cmark
-          libarchive
-          mesa ; libgl? 
-          qrencode ;might not exist?
-          tomlplusplus
-          zlib
-          clang
-          mesa-utils
-          pciutils
-          (list openjdk "jdk")
-        )
-        ;(specifications->packages '(
-        ;  "openjdk:jdk"
-        ;))  
-      ;)
+      (list 
+        qtbase
+        qtnetworkauth
+        qtimageformats  
+        qtsvg
+        cmark
+        libarchive
+        mesa 
+        qrencode 
+        tomlplusplus
+        zlib
+        clang
+        mesa-utils
+        pciutils
+        (list openjdk "jdk")
+      )
     )
     (arguments
       `(
@@ -207,8 +208,8 @@
                  (replace "mesa" driver)
                  ;; The first java found will be used and it needs to be
                  ;; 64-bit.
-                 ;; TODO: Change order in manifest, or set PATH, but prism
-                 ;; needs a 32-bit ldd (found first?).
+                 ;; TODO: Find a better solution, this solution was taken from nonguix game-clients
+                 ;;       They have the same goal so waiting till they solve it should be fine
                  (delete "openjdk25")
                )
                #:name "fhs-union-32"
