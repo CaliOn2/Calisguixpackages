@@ -1,8 +1,11 @@
 (define-module (prism_pkg)
+  #:use-module (guix utils)
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix derivations)
+  #:use-module (guix build utils)
   #:use-module (guix build-system cmake)
+  #:use-module (guix build-system ant)
   #:use-module (guix licenses)
   #:use-module (guix gexp)
   #:use-module (nonguix multiarch-container)
@@ -31,6 +34,7 @@
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages pulseaudio)
   #:use-module (gnu packages speech)
+  #:use-module (mcmods_pkg)
 )
 
 (define prism-container-libs
@@ -75,9 +79,6 @@
     ;;       additionally one would probably need some form of xwayland this probably isn't an issue on x11, hasn't been tested yet though
   )
 )
-
-                
-
 
 
 (define-public prism-client
@@ -156,7 +157,7 @@
               )
             )
             
-            (add-after 'patch-dot-desktop-files 'patch-desktop-file
+            (add-after 'patch-dot-desktop-files 'patch-desktop-file-prism
               (lambda _
                 (let ((path (string-append (assoc-ref %outputs "out") "/share/applications/")))
                   (substitute* (string-append path "org.prismlauncher.PrismLauncher.desktop")
@@ -193,27 +194,87 @@
   )
 )
 
-(define-public (prism-container-for driver)
+(define-public prism-cracked-client
+  (package
+    (inherit prism-client)
+    (name "prism-cracked-client")
+    (version "11.0.3")
+    (source
+      (origin
+        (method git-fetch)
+        (uri
+          (git-reference
+            (url "https://github.com/Diegiwg/PrismLauncher-Cracked")
+            (commit version)
+            (recursive? #t)
+          )
+        )
+        (file-name (git-file-name name version))
+        (sha256
+          (base32
+            "1v00ff5w94l6zi22p3kp4cjcijm0ws8s5v3di2c41lv3f9cyfwaw"
+          )
+        )
+      )
+    )
+    (arguments
+      (substitute-keyword-arguments arguments
+        (
+          (#:phases prism-phases)
+          #~(modify-phases #$prism-phases
+            (delete 'patch-desktop-file-prism)
+            (add-after 'patch-dot-desktop-files 'patch-desktop-file-prism-cracked
+              (lambda _
+                (let ((path (string-append (assoc-ref %outputs "out") "/share/applications/")))
+                  (substitute* (string-append path "org.prismlauncher.PrismLauncher.desktop")
+                    (
+                      ("Exec=.*/prismlauncher")  
+                      "Exec=prism-cracked"
+                    )
+                  )
+                  (rename-file (string-append path "org.prismlauncher.PrismLauncher.desktop") (string-append path "org.prismlaunchercracked.PrismLauncherCracked.desktop"))
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+    (synopsis "cracked version of Prism, so you don't need an mc account")
+    (home-page "https://github.com/Diegiwg/PrismLauncher-Cracked")
+  )
+)
+
+
+(define-public (prism-container-for package-name driver launcher game-mods path)
   (nonguix-container
-    (name "prism")
-    (wrap-package prism-client)
+    (name package-name)
+    (sandbox-home path)
+    (wrap-package launcher)
     (run "/bin/prismlauncher")
     (packages
       (modify-inputs prism-container-libs
         (replace "mesa" driver)
       )
     )
-     (union32
-    (fhs-union (modify-inputs prism-container-libs
-                 (replace "mesa" driver)
-                 ;; The first java found will be used and it needs to be
-                 ;; 64-bit.
-                 ;; TODO: Find a better solution, this solution was taken from nonguix game-clients
-                 ;;       They have the same goal so waiting till they solve it should be fine
-                 (delete "openjdk25")
-               )
-               #:name "fhs-union-32"
-               #:system "i686-linux"))
+    (union32
+      (fhs-union
+        (append 
+          (modify-inputs prism-container-libs
+            ;; The first java found will be used and it needs to be
+            ;; 64-bit.
+            ;; TODO: Find a better solution, this solution was taken from nonguix game-clients
+            ;;       They have the same goal so waiting till they solve it should be fine
+            (delete "openjdk25")
+
+            (replace "mesa" driver)
+          )
+          game-mods
+        )
+        #:name "fhs-union-32"
+        #:system "i686-linux"
+      )
+    )
     (link-files '("share"))
     (description
        "Prism is a minecraft mod platform.This package provides a script for launching prism in a Guix container
@@ -227,6 +288,19 @@ all games will be installed."
   (compose nonguix-container->package prism-container-for)
 )
 
-(define-public prism 
-  (prism-for mesa)
+(define-public (prism-driverless-pathless driver path)
+  (prism-for "prism" driver prism-client `() path)
+)
+
+
+(define-public (prism-cracked-driverless-pathless driver path)
+  (prism-for "prism-cracked" driver prism-cracked-client `(("anarchymod" ,anarchymod)) path)
+)
+
+(define-public prism
+  (prism-driverless-pathless mesa ".local/share/guix-sandbox-home")
+)
+
+(define-public prism-cracked
+  (prism-cracked-driverless-pathless mesa ".local/share/guix-sandbox-home")
 )
