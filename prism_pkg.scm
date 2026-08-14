@@ -294,7 +294,7 @@ all games will be installed."
 
 
 (define-public (prism-cracked-driverless-pathless driver path)
-  (prism-for "prism-cracked" driver prism-cracked-client `(("anarchymod" ,anarchymod)) path)
+  (prism-for "prism-cracked" driver prism-cracked-client `(("anarchymod" , anarchymod)) path)
 )
 
 (define-public prism

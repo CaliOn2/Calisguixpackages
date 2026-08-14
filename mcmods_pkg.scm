@@ -55,10 +55,10 @@
 )
 
 (define-public anarchymod
-  (let ((version "26.2"))
+  (let ((mcversion "26.2"))
     (package
-      (inherit (anarchymod-builder version))
-      (name (string-append "anarchymod-" version))
+      (inherit (anarchymod-builder mcversion))
+      (name (string-append "anarchymod-" mcversion))
     )
   )
 )
