@@ -22,7 +22,7 @@
 (define-public vesktop-client
   (package
     (name "vesktop-client")
-    (version "1.6.5") ;Do not fuck with this
+    (version "1.6.7") ;Do not fuck with this
     (source
       (origin
         (method url-fetch)
@@ -34,7 +34,7 @@
 	(file-name (string-append "vesktop_" version "_amd64.deb"))
 	(sha256
 	  (base32
-	    "1x8wqdn6rdjdj6gbzqhzzs8za9hr5fqkrijr3mb061w1wjmrfk1d" ;Do not fuck with this
+	    "0qbaxaz3kzkwv9pnnxlq8rnwlb9x89qbxabjpzg127c6z3ya6102" ;Do not fuck with this
 	  )
 	)
       )
