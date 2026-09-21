@@ -41,11 +41,11 @@
   `(
     ("at-spi2-core" ,at-spi2-core)      ; Needed for proper mouse input capture
 
-    ;("openjdk11" ,openjdk11)
-    ;("openjdk16" ,openjdk16)
-    ;("openjdk17" ,openjdk17)
-    ;("openjdk21" ,openjdk21)
-    ("openjdk25" ,openjdk25)
+    ;("openjdk" ,openjdk11)
+    ;("openjdk" ,openjdk16)
+    ;("openjdk" ,openjdk17)
+    ;("openjdk" ,openjdk21)
+    ("openjdk" ,openjdk25)
 
     ("glibc-locales", glibc-locales)    ;supress warning of missing locales
     
@@ -84,7 +84,7 @@
 (define-public prism-client
   (package
     (name "prism-client")
-    (version "11.0.3")
+    (version "11.1.0")
     (source
       (origin
         (method git-fetch)
@@ -98,7 +98,7 @@
 	(file-name (git-file-name name version))
 	(sha256
 	  (base32
-	    "04dv4c849lghhqq25p58l5aq37r2kvx9297w1139x9ajab97xhhf"
+	    "0zhvyzf13ijaqx3npam4lslgbwy8df9kj0jjijbvgzggbkkgbl1n"
 	  )
 	)
       )
@@ -265,7 +265,7 @@
             ;; 64-bit.
             ;; TODO: Find a better solution, this solution was taken from nonguix game-clients
             ;;       They have the same goal so waiting till they solve it should be fine
-            (delete "openjdk25")
+            (delete "openjdk")
 
             (replace "mesa" driver)
           )
