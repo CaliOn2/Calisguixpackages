@@ -84,7 +84,7 @@
 (define-public prism-client
   (package
     (name "prism-client")
-    (version "11.1.0")
+    (version "11.1.1")
     (source
       (origin
         (method git-fetch)
@@ -98,7 +98,7 @@
 	(file-name (git-file-name name version))
 	(sha256
 	  (base32
-	    "0zhvyzf13ijaqx3npam4lslgbwy8df9kj0jjijbvgzggbkkgbl1n"
+	    "1dm1fdb2z6jyb04ml2jxdqgaxr14a6a4i41r89fdpg22ngx12kkk"
 	  )
 	)
       )
