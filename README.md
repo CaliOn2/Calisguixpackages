@@ -6,3 +6,5 @@ Packages Till Now:
 -Vesktop
 
 -PrismMc Launcher (the cracked version has the anarchy mod preinstalled, in mods go onto add files where you can find it under /lib/minecraft/)
+
+-vscode ACHTUNG!!!!!!!! HAZARDOUS SOFTWARE DO NOT USE i made this package because i need it for university, theres a thousand good editors, THIS IS NOT ONE OF THEM
