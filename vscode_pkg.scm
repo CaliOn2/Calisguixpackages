@@ -8,6 +8,8 @@
   #:use-module (nonguix build-system chromium-binary)
   #:use-module (gnu packages curl)
   #:use-module (gnu packages gcc)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages gdb)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages file)
   #:use-module (gnu packages libusb)
@@ -16,6 +18,10 @@
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages video)
+  #:use-module (gnu packages python)
+  #:use-module (gnu packages version-control)
+  #:use-module (gnu packages documentation)
+  #:use-module (gnu packages graphviz)
   #:use-module (nonguix multiarch-container)
 )
 
@@ -101,7 +107,7 @@
                     (string-append apps "/" #$name ".desktop")
                     #:name "VSCode"
                     #:generic-name "Text Editor"
-                    #:exec (string-append #$output "/bin/vscode --ozone-platform-hint=auto")
+                    #:exec (string-append #$output "/bin/vscode")
                     #:icon "code"
                     #:type "Application"
                     #:actions '("new-empty-window")
@@ -142,11 +148,22 @@
    ("bash", bash)
    ("coreutils", coreutils)
    ("file", file)
-   ("libusb", libusb)
+   ("libusb", libusb) ;;ADD USERPERMS dialout
    ("mesa", mesa)
    ("llvm", llvm-for-mesa)
-   ("egl", egl-wayland)
-   ("glvnd", libglvnd)
+   ("make", gnu-make)
+   ("gdb", gdb)
+   ;; UNIVERSITY LIBS
+   ("python", python)
+   ("git", git)
+   ("doxygen", doxygen)
+   ("tar", tar)
+   ("graphviz", graphviz)
+   ("libx11", libx11)
+   ("libxinerama", libxinerama)
+   ("libxi", libxi)
+   ("libxcursor", libxcursor)
+   ("libxrandr", libxrandr)
   )
 )
 
