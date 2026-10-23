@@ -7,10 +7,11 @@
   #:use-module (guix licenses)
   #:use-module (nonguix build-system chromium-binary)
   #:use-module (gnu packages curl)
+  #:use-module (gnu packages nss)
   #:use-module (gnu packages gcc)
-  #:use-module (gnu packages base)
   #:use-module (gnu packages gdb)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages file)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages glib)
@@ -54,7 +55,7 @@
         #:validate-runpath? #f ; TODO: fails on wrapped binary and included other files
         #:substitutable? #f
         #:wrapper-plan
-          #~'(("lib/vscode/code" (("out" "/lib/vscode"))))
+          #~'(("lib/vscode/code" (("out" "/lib/vscode"))) "lib/vscode/chrome_crashpad_handler")
         #:phases
           #~(modify-phases %standard-phases
             (replace 'binary-unpack
@@ -107,7 +108,7 @@
                     (string-append apps "/" #$name ".desktop")
                     #:name "VSCode"
                     #:generic-name "Text Editor"
-                    #:exec (string-append #$output "/bin/vscode")
+                    #:exec (string-append #$output "/bin/vscode --ozone-platform-hint=auto")
                     #:icon "code"
                     #:type "Application"
                     #:actions '("new-empty-window")
@@ -142,6 +143,9 @@
 
 (define vscode-container-libs
  `(
+   ("egl", egl-wayland)
+   ("glvnd", libglvnd)
+   ("nss-certs", nss-certs)
    ("dbus-glib", dbus-glib)
    ("curl" ,curl)
    ("gcc" , gcc)
