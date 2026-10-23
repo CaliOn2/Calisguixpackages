@@ -94,7 +94,7 @@
                       (string-append #$output "/share/icons/hicolor/512x512/apps")
                     )
                     (icon.png
-                      (string-append #$output "/lib/vscode/resources/app/" "resources/linux/code.png")
+                      (string-append #$output "/share/icons/vscode.png")
                     )
                     (apps (string-append #$output "/share/applications"))
                   )
@@ -143,6 +143,7 @@
 
 (define vscode-container-libs
  `(
+   ("gtk", gtk+)
    ("egl", egl-wayland)
    ("glvnd", libglvnd)
    ("nss-certs", nss-certs)
