@@ -22,7 +22,7 @@
 (define-public vesktop-client
   (package
     (name "vesktop-client")
-    (version "1.6.7") ;Do not fuck with this
+    (version "1.6.8") ;Do not fuck with this
     (source
       (origin
         (method url-fetch)
@@ -34,7 +34,7 @@
 	(file-name (string-append "vesktop_" version "_amd64.deb"))
 	(sha256
 	  (base32
-	    "0qbaxaz3kzkwv9pnnxlq8rnwlb9x89qbxabjpzg127c6z3ya6102" ;Do not fuck with this
+	    "02a2nalx6h9gyhp4jhk3ia9ddj5wkpm1x9fm5zjdaydbv0307hcw" ;Do not fuck with this
 	  )
 	)
       )
@@ -44,22 +44,22 @@
       (list
         #:validate-runpath? #f 
            #:wrapper-plan
-           #~(map 
-             (lambda (file)
-               (string-append "lib/Vesktop/" file)   
-             )
-             '(
-               "vesktop"
-               "chrome-sandbox"
-               "chrome_crashpad_handler"
-               "libEGL.so"
-               "libffmpeg.so"
-               "libGLESv2.so"
-               "libvk_swiftshader.so"
-               "libvulkan.so.1"
-             )
-           )
-           ;#~'(("lib/Vesktop/vesktop" (("out" "/lib/Vesktop"))) "lib/Vesktop/chrome_crashpad_handler" )
+           ;#~(map 
+           ;  (lambda (file)
+           ;    (string-append "lib/Vesktop/" file)   
+           ;  )
+           ;  '(
+           ;    "vesktop"
+           ;    "chrome-sandbox"
+           ;    "chrome_crashpad_handler"
+           ;    "libEGL.so"
+           ;    "libffmpeg.so"
+           ;    "libGLESv2.so"
+           ;    "libvk_swiftshader.so"
+           ;    "libvulkan.so.1"
+           ;  )
+           ;)
+           #~'(("lib/Vesktop/vesktop" (("out" "/lib/Vesktop"))) "lib/Vesktop/chrome_crashpad_handler" )
            #:phases
              #~(modify-phases %standard-phases
                (add-after 'binary-unpack 'setup-cwd
@@ -69,6 +69,7 @@
                    (rename-file "opt/" "lib")
                    ;; Remove unneeded files.
                    (delete-file-recursively "usr")
+                   (invoke "ls" "lib/Vesktop")
                  )
                )
                ;; Fix the .desktop file "Exec" line to just be "vesktop" in
